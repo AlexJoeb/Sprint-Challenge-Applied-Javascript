@@ -14,15 +14,14 @@ axios.get(`https://lambda-times-backend.herokuapp.com/articles`)
     for(let index in articleNames){
         const article = articleNames[index];
         articles[article].forEach(item => {
-            const art = newArticle(item);
-            art.dataset.topic = article;
+            const art = newArticle(item, article);
             append("cards-container", art);
         })
     }
 })
 .catch(err => console.error(err));
 
-const newArticle = a => {
+const newArticle = (a, topic) => {
     const card = ele("div"),
         headline = ele("div"),
         author = ele("div"),
@@ -45,6 +44,8 @@ const newArticle = a => {
     append(author, imgContainer);
     append(author, name);
     append(imgContainer, img);
+
+    card.dataset.topic = topic;
 
     return card;
 }

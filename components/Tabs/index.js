@@ -8,6 +8,8 @@
 //  The tab component should look like this:
 //    <div class="tab">topic here</div>
 
+let show = 'reset';
+
 axios.get(`https://lambda-times-backend.herokuapp.com/topics`)
 .then(res => {
     let { topics } = res.data;
@@ -21,7 +23,9 @@ axios.get(`https://lambda-times-backend.herokuapp.com/topics`)
         tabDiv.addEventListener("click", (e) => {
             const { target } = event;
             const { topic } = target.dataset;
-
+            console.log(topic);
+            show = topic === "node.js" ? "node" : topic;
+            filterCards();
         })
     })
 })
@@ -35,4 +39,11 @@ const tab = topic => {
     return tab;
 }
 
-console.log("=> ", $(".card[data-topic='javascript']"))
+const filterCards = () => {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(item => {
+        const { topic } = item.dataset;
+        if(topic === show || show === "reset") item.style.display = "block";
+        else item.style.display = "none";
+    })
+}
