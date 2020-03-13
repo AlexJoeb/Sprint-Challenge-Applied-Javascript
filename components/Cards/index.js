@@ -5,15 +5,44 @@
 // You will be creating a component for each 'article' in the list.
 // This won't be as easy as just iterating over an array though.
 // Create a function that will programmatically create the following DOM component:
-//
-// <div class="card">
-//   <div class="headline">{Headline of article}</div>
-//   <div class="author">
-//     <div class="img-container">
-//       <img src={url of authors image} />
-//     </div>
-//     <span>By {authors name}</span>
-//   </div>
-// </div>
-//
 // Create a card for each of the articles and add the card to the DOM.
+
+axios.get(`https://lambda-times-backend.herokuapp.com/articles`)
+.then(res => {
+    const { articles } = res.data;
+    const articleNames = Object.keys(articles);
+    for(let index in articleNames){
+        const article = articleNames[index];
+        articles[article].forEach(item => {
+            append("cards-container", newArticle(item));
+        })
+    }
+})
+.catch(err => console.error(err));
+
+const newArticle = a => {
+    const card = ele("div"),
+        headline = ele("div"),
+        author = ele("div"),
+        imgContainer = ele("div"),
+        img = ele("img"),
+        name = ele("span");
+
+    ac(card, "card");
+    ac(headline, "headline");
+    ac(author, "author");
+    ac(imgContainer, "img-container");
+
+    text(headline, a.headline);
+    text(name, a.authorName);
+
+    img.src = a.authorPhoto;
+
+    append(card, headline);
+    append(card, author);
+    append(author, imgContainer);
+    append(author, name);
+    append(imgContainer, img);
+
+    return card;
+}
