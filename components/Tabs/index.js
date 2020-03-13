@@ -10,9 +10,19 @@
 
 axios.get(`https://lambda-times-backend.herokuapp.com/topics`)
 .then(res => {
-    const { topics } = res.data;
+    let { topics } = res.data;
+    topics = [
+        ...topics,
+        "reset"
+    ];
     topics.forEach(item => {
-        append("topics", tab(item));
+        const tabDiv =  tab(item);
+        append("topics", tabDiv);
+        tabDiv.addEventListener("click", (e) => {
+            const { target } = event;
+            const { topic } = target.dataset;
+
+        })
     })
 })
 .catch(err => console.error(err));
@@ -21,5 +31,8 @@ const tab = topic => {
     const tab = ele("div");
     ac(tab, "tab");
     text(tab, topic);
+    tab.dataset.topic = topic;
     return tab;
 }
+
+console.log("=> ", $(".card[data-topic='javascript']"))

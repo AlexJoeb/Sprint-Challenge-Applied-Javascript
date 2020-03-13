@@ -14,7 +14,9 @@ axios.get(`https://lambda-times-backend.herokuapp.com/articles`)
     for(let index in articleNames){
         const article = articleNames[index];
         articles[article].forEach(item => {
-            append("cards-container", newArticle(item));
+            const art = newArticle(item);
+            art.dataset.topic = article;
+            append("cards-container", art);
         })
     }
 })
